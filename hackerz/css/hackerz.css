@@ -1,0 +1,72 @@
+.mono {
+	font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+	font-size: 10pt;
+}
+
+body {
+	background-color: black;
+	color: #00ff00;
+}
+
+input {
+	vertical-align: center;
+	color: #00ff00;
+	width: 100%;
+	border-style: solid;
+	background-color: black;
+	border-bottom: thin solid #00ff00;
+	border-top:    0px;
+	border-left:   0px;
+	border-right:  0px;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.form {
+	width: 100%;
+}
+
+.container {
+	width: 400px;
+	height: 112px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -61px;
+	margin-left: -200px;
+}
+
+.chooser {
+	width: 100%;
+}
+
+.chooser td {
+	text-align: center;
+}
+
+.chooser ul {
+	list-style: none;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	margin-top: 20px;
+}
+
+.chooser li {
+	padding: 10px;
+}
+
+.chooser li.selected {
+	background-color: #00ff00;
+	color: black;
+}
+
+body {
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
