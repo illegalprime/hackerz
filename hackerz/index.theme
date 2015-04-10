@@ -1,0 +1,6 @@
+[theme]
+name=Hackerz
+description=A Minimalistic Green Webkit Theme
+engine=lightdm-webkit-greeter
+url=index.html
+session=gnome
