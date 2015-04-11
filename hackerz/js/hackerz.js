@@ -63,9 +63,12 @@ function authentication_complete() {
     if (lightdm.is_authenticated) {
         // Pick which environment we want
         $(".container").addClass("animated fadeOut");
-        var session = lightdm.sessions[menu.session.curr - 1].key;
-        // Login the user
-        lightdm.login(lightdm.authentication_user, session);
+        setTimeout(function() {
+            // Login the user
+            // TODO: Should there be a delay for the fade effect?
+            var session = lightdm.sessions[menu.session.curr - 1].key;
+            lightdm.login(lightdm.authentication_user, session);
+        }, 500);
     }
     else {
         // Make an error-ing animation
