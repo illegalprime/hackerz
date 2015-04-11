@@ -46,7 +46,6 @@ function login() {
     // get references to objects;
     var uInput = document.getElementById("user");
     var pInput = document.getElementById("pass");
-    // TODO: Pick session: var sInput = document.getElementBy
 
     // Capture credentials
     var user = uInput.value;
@@ -56,12 +55,14 @@ function login() {
     lightdm.provide_secret(pass);
 
     // Some notifications:
-    $(".container").addClass("animated fadeOut");
+    $("#userLbl").html("Logging In...");
+    $("#passLbl").html("&nbsp;");
 }
 
 function authentication_complete() {
     if (lightdm.is_authenticated) {
         // Pick which environment we want
+        $(".container").addClass("animated fadeOut");
         var session = lightdm.sessions[menu.session.curr - 1].key;
         // Login the user
         lightdm.login(lightdm.authentication_user, session);
@@ -70,15 +71,20 @@ function authentication_complete() {
         // Make an error-ing animation
         // TODO: Make the password field highlighted when this happens
         $(".container").attr("class", "container");
-        $('#pass').attr('class', 'mono animated wobble')
-        lightdm.start_authentication(currUser);
+        $("#userLbl").html("Username:");
+        $("#passLbl").html("Password:");
+        $('#pass').attr('class', 'mono animated wobble');
+        setTimeout(function() {
+            $('#pass').attr('class', 'mono');
+        }, 1000);
+        updateUser(currUser);
     }
 }
 
 function updateUser(username) {
     $("#user").val(username);
     currUser = username;
-    lightdm.cancel_authentication();
+    // lightdm.cancel_authentication();
     lightdm.start_authentication(username);
 }
 
@@ -104,7 +110,7 @@ $(document).ready(function() {
     typeWriter(document.getElementById("userLbl"), "Username:", 0, function() {
         typeWriter(document.getElementById("passLbl"), "Password:", 0, function() {
 
-            var currUser = getDefaultUsername();
+            currUser = getDefaultUsername();
             document.getElementById("user").value = currUser;
             lightdm.start_authentication(currUser);
 
