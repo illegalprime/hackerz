@@ -42,6 +42,49 @@ function usernames() {
     return users;
 }
 
+usernames = function() {
+    return [ "michael", "mark", "amos" ];
+}
+
+getDefaultUsername = function() {
+    return "michael";
+}
+
+/*******************************************
+ *                                         *
+ *           Debugging Methods!            *
+ *                                         *
+ *******************************************/
+// lightdm = {};
+// lightdm.provide_secret = function(pass) {
+//     lightdm.is_authenticated = pass == "password";
+//     setTimeout(authentication_complete, 1000);
+// };
+// lightdm.sessions = (function() {
+//     var sess = ["kde", "gnome", "xfce", "i3", "bspwn"];
+//     var sessions = [];
+//     for (i in sess) {
+//         sessions.push({
+//             name: sess[i],
+//             key:  sess[i]
+//         });
+//     }
+//     return sessions;
+// })();
+// lightdm.users = (function() {
+//     var us = [ "michael", "mark", "amos" ];
+//     var users = [];
+//     for (i in us) {
+//         users.push({
+//             name: us[i]
+//         });
+//     }
+//     return users;
+// })();
+// lightdm.login = function(user, session) {};
+// lightdm.start_authentication = function() {};
+// lightdm.cancel_authentication = function() {};
+
 function login() {
     // get references to objects;
     var uInput = document.getElementById("user");

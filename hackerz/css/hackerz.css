@@ -70,3 +70,19 @@ body {
 	-o-user-select: none;
 	user-select: none;
 }
+
+::-webkit-input-placeholder {
+   color: green;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: green;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: green;
+}
+
+:-ms-input-placeholder {
+   color: green;
+}
