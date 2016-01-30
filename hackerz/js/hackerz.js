@@ -214,7 +214,7 @@ $(document).ready(function() {
 
     function changeMenu(increment) {
         var selector = ".chooser ul." + curr.class + " li:nth-child(";
-        
+
         $(selector + curr.curr + ")").removeClass("selected");
         curr.curr += increment;
         $(selector + curr.curr + ")").addClass("selected");
@@ -232,25 +232,21 @@ $(document).ready(function() {
         if (event.which == 17) {
             $(".chooser").attr("class", "chooser animated flipInX");
             menu.up = true;
-        }
-        else if (event.which == 37) {
+        } else if (event.which === 37 || event.which === 72) {
             // Left
             if (menu.up && curr === menu.session) {
                 curr = menu.user;
             }
-        }
-        else if (event.which == 39) {
+        } else if (event.which === 39 || event.which === 76) {
             // Right
             if (menu.up && curr === menu.user) {
                 curr = menu.session;
             }
-        }
-        else if (event.which == 38) {
+        } else if (event.which === 38 || event.which === 75) {
             // Up
             if (!menu.up || curr.curr <= 1) return;
             changeMenu(-1);
-        }
-        else if (event.which == 40) {
+        } else if (event.which === 40 || event.which === 74) {
             // Down
             if (!menu.up || curr.curr >= curr.max) return;
             changeMenu(1);
