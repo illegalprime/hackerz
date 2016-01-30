@@ -1,6 +1,7 @@
 
 // Initial Metadata for the menu
 // var local = localStorage.getItem("menu");
+var DEBUG = false;
 var local = { up: undefined };
 var menu  = local.up != undefined ? local : {
     up: false,
@@ -11,21 +12,23 @@ var menu  = local.up != undefined ? local : {
     },
     session: {
         class: "session",
-        curr: 4,
+        curr: 1,
         max: 1
     }
 };
 menu.up = false;
 var curr = menu.session;
 var currUser;
+var message_queue = {
+    password: [],
+};
 
 function typeWriter(element, text, n, callback) {
     if (n < text.length) {
         element.innerHTML = text.substring(0, n + 1);
         n++;
         setTimeout(function() { typeWriter(element, text, n, callback); }, 50);
-    }
-    else {
+    } else {
         callback();
     }
 }
@@ -42,13 +45,13 @@ function usernames() {
     return users;
 }
 
-usernames = function() {
-    return [ "michael", "mark", "amos" ];
-}
-
-getDefaultUsername = function() {
-    return "michael";
-}
+// usernames = function() {
+//     return [ "michael", "mark", "amos" ];
+// }
+//
+// getDefaultUsername = function() {
+//     return "michael";
+// }
 
 /*******************************************
  *                                         *
@@ -94,13 +97,59 @@ function login() {
     var user = uInput.value;
     var pass = pInput.value;
 
-    // login n' such
-    lightdm.provide_secret(pass);
+    console.log("Logging in with user", user);
+
+    // login n" such
+    lightdm.start_authentication(user);
+
+    console.log("Started authentication", user, "...");
 
     // Some notifications:
     $("#userLbl").html("Logging In...");
     $("#passLbl").html("&nbsp;");
+
+    message_queue.password.push(function() {
+        console.log("Sending credentials...");
+        return pass;
+    });
 }
+
+(function() {
+    // Don't set this up if we're not in debug mode.
+    if (!DEBUG) {
+        return;
+    }
+    $(document).ready(function() {
+        $(".debug").show();
+    });
+    var cache;
+    window.console.log = function() {
+        var args = Array.prototype.slice.call(arguments, 0);
+        var message = args.join(" ");
+        var logger = document.getElementById("logger");
+        if (logger) {
+            if (cache) {
+                message = cache + "<br/>" + message;
+                cache = undefined;
+            }
+            logger.innerHTML += message + "<br/>";
+        } else {
+            cache += "<br/>" + message;
+        }
+    };
+})();
+
+window.onerror = function(message, url, line, column, error) {
+    // console.log("UNCAUGHT ERROR", JSON.stringify(arguments));
+    console.log("UNCAUGHT ERROR", line, ":", column, "@");
+};
+
+window.onload = function() {
+    console.log("Debugger Ready...");
+    for (key in lightdm) {
+        console.log(key);
+    }
+};
 
 function authentication_complete() {
     if (lightdm.is_authenticated) {
@@ -112,16 +161,15 @@ function authentication_complete() {
             var session = lightdm.sessions[menu.session.curr - 1].key;
             lightdm.login(lightdm.authentication_user, session);
         }, 500);
-    }
-    else {
+    } else {
         // Make an error-ing animation
         // TODO: Make the password field highlighted when this happens
         $(".container").attr("class", "container");
         $("#userLbl").html("Username:");
         $("#passLbl").html("Password:");
-        $('#pass').attr('class', 'mono animated wobble');
+        $("#pass").attr("class", "mono animated wobble");
         setTimeout(function() {
-            $('#pass').attr('class', 'mono');
+            $("#pass").attr("class", "mono");
         }, 1000);
         updateUser(currUser);
     }
@@ -130,8 +178,6 @@ function authentication_complete() {
 function updateUser(username) {
     $("#user").val(username);
     currUser = username;
-    // lightdm.cancel_authentication();
-    lightdm.start_authentication(username);
 }
 
 $(document).ready(function() {
@@ -140,7 +186,7 @@ $(document).ready(function() {
         if (i == menu.session.curr - 1) {
             active = "selected";
         }
-        $(".chooser ul.session").append("<li class='" + active + "' >" + lightdm.sessions[i].name + "</li>");
+        $(".chooser ul.session").append("<li class='" + active + "'>" + lightdm.sessions[i].name + "</li>");
     }
     menu.session.max = lightdm.sessions.length;
 
@@ -149,7 +195,7 @@ $(document).ready(function() {
         if (i == menu.user.curr - 1) {
             active = "selected";
         }
-        $(".chooser ul.user").append("<li class='" + active + "'  >" + lightdm.users[i].name + "</li>");
+        $(".chooser ul.user").append("<li class='" + active + "'>" + lightdm.users[i].name + "</li>");
     }
     menu.user.max = lightdm.users.length;
 
@@ -158,9 +204,8 @@ $(document).ready(function() {
 
             currUser = getDefaultUsername();
             document.getElementById("user").value = currUser;
-            lightdm.start_authentication(currUser);
 
-            inputs = document.getElementsByTagName('input');
+            inputs = document.getElementsByTagName("input");
             inputs[0].className = "mono animated fadeInUp";
             inputs[1].className = "mono animated fadeInDown";
             inputs[1].focus();
@@ -219,18 +264,28 @@ $(document).ready(function() {
         }
     });
 
+    var login_on_enter = function(event) {
+        if (event.which == 13) {
+            login();
+        }
+    };
+
     // Enter accepts the password
-    $("#pass").keypress(function(event) {
-        if (event.which == 13) {
-            login();
-        }
-    });
-    $("#user").keypress(function(event) {
-        if (event.which == 13) {
-            login();
-        }
-    });
+    $("#pass").keypress(login_on_enter);
+    $("#user").keypress(login_on_enter);
 });
 
-function show_prompt() {}
-function show_error() {}
+function show_prompt(text, type) {
+    console.log("PROMPT " + type + ":", text);
+    var listeners = message_queue[type];
+    while (listeners.length > 0) {
+        var response = (listeners.pop())(text);
+        if (response) {
+            lightdm.respond(response);
+            break;
+        }
+    }
+}
+function show_error(text, type) {
+    console.log("ERROR" + type + ":", text);
+}

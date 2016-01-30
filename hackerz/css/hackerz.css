@@ -3,11 +3,6 @@
 	font-size: 10pt;
 }
 
-body {
-	background-color: black;
-	color: #00ff00;
-}
-
 input {
 	vertical-align: center;
 	color: #00ff00;
@@ -64,6 +59,8 @@ input {
 }
 
 body {
+	background-color: black;
+	color: #00ff00;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
@@ -85,4 +82,15 @@ body {
 
 :-ms-input-placeholder {
    color: green;
+}
+
+/* Debugger tools */
+div.debug {
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    height: 100%;
+    width: 34%;
+    overflow-y: scroll;
+    display: none;
 }
