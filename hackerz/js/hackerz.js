@@ -117,6 +117,9 @@ function login() {
     $("#userLbl").html("Signing in...");
     $("#passLbl").html("&nbsp;");
 
+    $("#user").attr("disabled", "disabled");
+    $("#pass").attr("disabled", "disabled");
+
     message_queue.password.push(function() {
         console.log("Sending credentials...");
         return pass;
@@ -161,6 +164,10 @@ window.onload = function() {
 };
 
 function authentication_complete() {
+    var reenable_inputs = function() {
+        $("#user").removeAttr("disabled");
+        $("#pass").removeAttr("disabled");
+    };
     if (lightdm.is_authenticated) {
         // Pick which environment we want
         $(".container").addClass("animated fadeOut");
@@ -180,6 +187,11 @@ function authentication_complete() {
         setTimeout(function() {
             $("#pass").attr("class", "mono");
             $("#pass").val("");
+            reenable_inputs();
+
+            setTimeout(function() {
+                $("#pass").focus();
+            }, 0);
         }, 1000);
         updateUser(currUser);
     }
