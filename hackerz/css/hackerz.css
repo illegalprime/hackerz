@@ -1,6 +1,11 @@
+@font-face {
+    font-family: OxygenMono;
+    src: url(../fonts/OxygenMono-Regular.ttf);
+}
+
 .mono {
-	font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
-	font-size: 10pt;
+	font-family: OxygenMono;
+	font-size: 11pt;
 }
 
 input {
