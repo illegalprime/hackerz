@@ -105,7 +105,7 @@ function login() {
     console.log("Started authentication", user, "...");
 
     // Some notifications:
-    $("#userLbl").html("Logging In...");
+    $("#userLbl").html("Signing in...");
     $("#passLbl").html("&nbsp;");
 
     message_queue.password.push(function() {
@@ -170,6 +170,7 @@ function authentication_complete() {
         $("#pass").attr("class", "mono animated wobble");
         setTimeout(function() {
             $("#pass").attr("class", "mono");
+            $("#pass").val("");
         }, 1000);
         updateUser(currUser);
     }
