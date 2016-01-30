@@ -1,3 +1,55 @@
+(function() {
+    "use strict";
+
+    // Make a mock if we're in a browser
+    if (!window.lightdm) {
+        var auth_start = false;
+        window.lightdm = {
+            sessions: (function() {
+                var session_names = ["kde", "gnome", "xfce", "i3", "bspwn"];
+                var sessions = [];
+                session_names.forEach(function(session_name) {
+                    sessions.push({
+                        name: session_name,
+                        key:  session_name,
+                    });
+                });
+                return sessions;
+            })(),
+            users: (function() {
+                var usernames = [ "michael", "mark", "amos" ];
+                var users = [];
+                usernames.forEach(function(username) {
+                    users.push({
+                        name: username,
+                    });
+                });
+                return users;
+            })(),
+            start_authentication: function() {
+                auth_start = true;
+                setTimeout(function() {
+                    show_prompt("Password:", "password");
+                }, 0);
+            },
+            respond: function(text) {
+                console.log("response", text);
+                if (auth_start) {
+                    if (text === "password") {
+                        window.lightdm.is_authenticated = true;
+                    }
+                    setTimeout(function() {
+                        authentication_complete();
+                    }, 500);
+                    auth_start = false;
+                }
+            },
+            login: function() {
+                $("body").html("");
+            },
+        };
+    }
+})();
 
 // Initial Metadata for the menu
 // var local = localStorage.getItem("menu");
@@ -44,49 +96,6 @@ function usernames() {
     }
     return users;
 }
-
-// usernames = function() {
-//     return [ "michael", "mark", "amos" ];
-// }
-//
-// getDefaultUsername = function() {
-//     return "michael";
-// }
-
-/*******************************************
- *                                         *
- *           Debugging Methods!            *
- *                                         *
- *******************************************/
-// lightdm = {};
-// lightdm.provide_secret = function(pass) {
-//     lightdm.is_authenticated = pass == "password";
-//     setTimeout(authentication_complete, 1000);
-// };
-// lightdm.sessions = (function() {
-//     var sess = ["kde", "gnome", "xfce", "i3", "bspwn"];
-//     var sessions = [];
-//     for (i in sess) {
-//         sessions.push({
-//             name: sess[i],
-//             key:  sess[i]
-//         });
-//     }
-//     return sessions;
-// })();
-// lightdm.users = (function() {
-//     var us = [ "michael", "mark", "amos" ];
-//     var users = [];
-//     for (i in us) {
-//         users.push({
-//             name: us[i]
-//         });
-//     }
-//     return users;
-// })();
-// lightdm.login = function(user, session) {};
-// lightdm.start_authentication = function() {};
-// lightdm.cancel_authentication = function() {};
 
 function login() {
     // get references to objects;
