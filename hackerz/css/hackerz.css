@@ -20,6 +20,10 @@ input {
 	border-right:  0px;
 }
 
+input:focus {
+    outline: none;
+}
+
 .hide {
 	visibility: hidden;
 }
