@@ -11,6 +11,7 @@
     // Make a mock if we're in a browser
     if (!window.lightdm) {
         var auth_start = false;
+        var auth_cancel = false;
         window.lightdm = {
             sessions: (function() {
                 var session_names = ["kde", "gnome", "xfce", "i3", "bspwn"];
@@ -46,13 +47,22 @@
                         window.lightdm.is_authenticated = true;
                     }
                     setTimeout(function() {
-                        authentication_complete();
+                        if (auth_cancel) {
+                            auth_cancel = false;
+                        } else {
+                            authentication_complete();
+                        }
                     }, 500);
                     auth_start = false;
                 }
             },
             login: function() {
                 $("body").html("");
+            },
+            cancel_authentication: function() {
+                auth_cancel = true;
+                window.lightdm.is_authenticated = false;
+                authentication_complete();
             },
         };
     }
@@ -207,6 +217,8 @@
         $(document).keydown(function(event) {
             if (event.which === 13) {
                 login();
+            } else if (event.which === 27) { // Escape
+                lightdm.cancel_authentication();
             } else if (!event.ctrlKey) {
                 // We must be holding it down to edit the settings
                 return;
