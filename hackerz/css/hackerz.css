@@ -4,20 +4,20 @@
 }
 
 .mono {
-	font-family: OxygenMono;
-	font-size: 11pt;
+    font-family: OxygenMono;
+    font-size: 11pt;
 }
 
 input {
-	vertical-align: center;
-	color: #00ff00;
-	width: 100%;
-	border-style: solid;
-	background-color: black;
-	border-bottom: thin solid #00ff00;
-	border-top:    0px;
-	border-left:   0px;
-	border-right:  0px;
+    vertical-align: center;
+    color: #00ff00;
+    width: 100%;
+    border-style: solid;
+    background-color: black;
+    border-bottom: thin solid #00ff00;
+    border-top:    0px;
+    border-left:   0px;
+    border-right:  0px;
 }
 
 input:focus {
@@ -25,64 +25,64 @@ input:focus {
 }
 
 .hide {
-	visibility: hidden;
+    visibility: hidden;
 }
 
 .form {
-	width: 100%;
+    width: 100%;
 }
 
 .container {
-	width: 400px;
-	height: 112px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -61px;
-	margin-left: -200px;
+    width: 400px;
+    height: 112px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -61px;
+    margin-left: -200px;
 }
 
 .chooser {
-	width: 100%;
+    width: 100%;
 }
 
 .chooser td {
-	text-align: center;
+    text-align: center;
 }
 
 .chooser ul {
-	list-style: none;
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-	margin-top: 20px;
+    list-style: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 20px;
 }
 
 .chooser li {
-	padding: 10px;
+    padding: 10px;
 }
 
 .chooser li.selected {
-	background-color: #00ff00;
-	color: black;
+    background-color: #00ff00;
+    color: black;
 }
 
 body {
-	background-color: black;
-	color: #00ff00;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+    background-color: black;
+    color: #00ff00;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 ::-webkit-input-placeholder {
-   color: green;
+    color: green;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: green;
+    color: green;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
@@ -90,7 +90,7 @@ body {
 }
 
 :-ms-input-placeholder {
-   color: green;
+    color: green;
 }
 
 /* Debugger tools */
@@ -100,6 +100,5 @@ div.debug {
     left: 1%;
     height: 100%;
     width: 34%;
-    overflow-y: scroll;
     display: none;
 }
