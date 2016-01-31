@@ -104,6 +104,11 @@
                 }
                 $(menu[column].element).removeClass("selected");
                 $(menu[column].element).eq(menu[column].curr).addClass("selected");
+                if (column === menu.column[menu.column.curr]) {
+                    $(menu[column].element).parent().addClass("selected");
+                } else {
+                    $(menu[column].element).parent().removeClass("selected");
+                }
             });
             if (menu.users.last !== menu.users.curr) {
                 $("#user").val(menu.users[menu.users.curr]);

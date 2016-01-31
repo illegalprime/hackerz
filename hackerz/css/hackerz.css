@@ -62,8 +62,12 @@ input:focus {
     padding: 10px;
 }
 
-.chooser li.selected {
+ul.selected li.selected {
     background-color: #00ff00;
+}
+
+ul li.selected {
+    background-color: #00bb00;
     color: black;
 }
 
