@@ -62,7 +62,6 @@
             cancel_authentication: function() {
                 auth_cancel = true;
                 window.lightdm.is_authenticated = false;
-                authentication_complete();
             },
         };
     }
@@ -94,6 +93,10 @@
         };
 
         menu.update = function() {
+            menu.column.curr = menu.column.curr % menu.column.length;
+            if (menu.column.curr < 0) {
+                menu.column.curr += menu.column.length;
+            }
             Array.prototype.forEach.call(menu.column, function(column) {
                 menu[column].curr = menu[column].curr % menu[column].length;
                 if (menu[column].curr < 0) {
@@ -132,7 +135,7 @@
 
         Log.log("Logging in with user", user);
 
-        // login n" such
+        // login n' such
         lightdm.start_authentication(user);
 
         Log.log("Started authentication", user, "...");
@@ -146,7 +149,7 @@
 
         prompt_queue.password.push(function() {
             Log.log("Sending credentials...");
-            return pass ? pass : true;
+            return pass ? pass : "true";
         });
     };
 
@@ -219,13 +222,14 @@
                 login();
             } else if (event.which === 27) { // Escape
                 lightdm.cancel_authentication();
+                authentication_complete();
+            } else if (event.which === 17) { // Ctrl
+                $(".chooser").attr("class", "chooser animated flipInX");
             } else if (!event.ctrlKey) {
                 // We must be holding it down to edit the settings
                 return;
             }
-            if (event.which == 17) {
-                $(".chooser").attr("class", "chooser animated flipInX");
-            } else if (event.which === 37 || event.which === 72) { // Left
+            if (event.which === 37 || event.which === 72) { // Left
                 menu.column.curr -= 1;
             } else if (event.which === 39 || event.which === 76) { // Right
                 menu.column.curr += 1;
