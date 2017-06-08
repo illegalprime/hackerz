@@ -154,12 +154,17 @@
 
         prompt_queue.password.push(function() {
             Log.log("Sending credentials...");
-            return pass ? pass : "true";
+            var nonnull_pass = pass ? pass : "no-password";
+            lightdm.provide_secret(pass);
+            return nonnull_pass;
         });
     };
 
     window.show_prompt = function(text, type) {
         Log.log("PROMPT " + type + ":", text);
+        if (text != null && text.match(/password/i)) {
+            type = "password";
+        }
         var listeners = prompt_queue[type];
         while (listeners.length > 0) {
             var response = (listeners.pop())(text);
